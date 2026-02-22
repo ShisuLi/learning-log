@@ -1,1 +1,66 @@
+# OS
 .DS_Store
+Thumbs.db
+
+# Python bytecode and extensions
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Python tooling cache and test artifacts
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.hypothesis/
+.nox/
+.tox/
+.coverage
+.coverage.*
+htmlcov/
+
+# Build and packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+sdist/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+pip-wheel-metadata/
+
+# Virtual environment and local Python version
+.venv/
+venv/
+ENV/
+env/
+.python-version
+
+# UV package manager
+.uv/
+uv.lock
+
+# Jupyter
+.ipynb_checkpoints/
+
+# IDE/editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Local training artifacts
+dl-from-scratch/models/*.pkl
+dl-from-scratch/models/*.h5
+dl-from-scratch/models/*.pth
+
+# Dataset cache
+dl-from-scratch/dataset/*.gz
+dl-from-scratch/dataset/*.pkl
+dl-from-scratch/dataset/mnist/
