@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>李宏毅机器学习课程追踪表</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #ddd;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transition: width 0.3s ease;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: white;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .btn-secondary {
+            background: rgba(255,255,255,0.3);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.4);
+        }
+
+        .year-section {
+            margin-bottom: 25px;
+        }
+
+        .year-title {
+            background: white;
+            padding: 15px 20px;
+            border-radius: 8px 8px 0 0;
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #667eea;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .year-progress {
+            font-size: 0.8em;
+            color: #999;
+        }
+
+        .courses {
+            background: white;
+            padding: 0;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .course-item {
+            padding: 15px 20px;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            align-items: center;
+            transition: background 0.2s ease;
+        }
+
+        .course-item:hover {
+            background: #f9f9f9;
+        }
+
+        .course-item:last-child {
+            border-bottom: none;
+        }
+
+        .course-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            margin-right: 15px;
+            accent-color: #667eea;
+        }
+
+        .course-item label {
+            flex: 1;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            user-select: none;
+        }
+
+        .course-item input[type="checkbox"]:checked + label {
+            color: #999;
+            text-decoration: line-through;
+        }
+
+        .course-name {
+            flex: 1;
+        }
+
+        .course-status {
+            font-size: 0.85em;
+            color: #999;
+            margin-left: 10px;
+        }
+
+        .summary {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .summary h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .summary-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .summary-item {
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 5px;
+            border-left: 4px solid #667eea;
+        }
+
+        .summary-item strong {
+            color: #667eea;
+        }
+
+        .footer {
+            text-align: center;
+            color: white;
+            margin-top: 30px;
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .controls {
+                flex-direction: column;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎓 李宏毅机器学习课程追踪</h1>
+            <p>2017-2025 年度完整课程学习记录</p>
+        </div>
+
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-value" id="totalCourses">66</div>
+                <div class="stat-label">总课程数</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="completedCourses">0</div>
+                <div class="stat-label">已完成</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="remainingCourses">66</div>
+                <div class="stat-label">待完成</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="completionRate">0%</div>
+                <div class="stat-label">完成率</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="btn-primary" onclick="markAll(true)">✓ 全部标记为已完成</button>
+            <button class="btn-primary" onclick="markAll(false)">✗ 全部标记为未完成</button>
+            <button class="btn-secondary" onclick="exportData()">📥 导出数据</button>
+            <button class="btn-secondary" onclick="clearData()">🗑️ 清除所有数据</button>
+        </div>
+
+        <div id="coursesContainer"></div>
+
+        <div class="summary">
+            <h2>📊 学习概览</h2>
+            <div class="summary-content">
+                <div class="summary-item">
+                    <strong>2017 年课程:</strong> <span id="summary2017">12 节</span>
+                </div>
+                <div class="summary-item">
+                    <strong>2019 年课程:</strong> <span id="summary2019">13 节</span>
+                </div>
+                <div class="summary-item">
+                    <strong>2021 年课程:</strong> <span id="summary2021">11 节</span>
+                </div>
+                <div class="summary-item">
+                    <strong>2023 年课程:</strong> <span id="summary2023">8 节</span>
+                </div>
+                <div class="summary-item">
+                    <strong>2024 生成式AI:</strong> <span id="summary2024-GenAI">10 节</span>
+                </div>
+                <div class="summary-item">
+                    <strong>2025 年课程:</strong> <span id="summary2025">10 节</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>💡 点击课程项目前的复选框标记学习进度 | 数据自动保存到本地浏览器</p>
+        </div>
+    </div>
+
+    <script>
+        const courses = {
+            "2017": [
+                { name: "Lec1 - 回归 (Regression)", id: "2017_1" },
+                { name: "Lec2 - 梯度下降 (Gradient Descent)", id: "2017_2" },
+                { name: "Lec3 - 逻辑回归 (Logistic Regression)", id: "2017_3" },
+                { name: "Lec4 - 深度学习介绍与反向传播 (DL Intro & Backpropagation)", id: "2017_4" },
+                { name: "Lec5 - 卷积神经网络 (CNN)", id: "2017_5" },
+                { name: "Lec6 - 递归神经网络 (RNN)", id: "2017_6" },
+                { name: "Lec7 - 集成学习与半监督学习 (Ensemble & Semi-supervised)", id: "2017_7" },
+                { name: "Lec8 - 迁移学习 (Transfer Learning)", id: "2017_8" },
+                { name: "Lec9 - 强化学习 (RL)", id: "2017_9" },
+                { name: "Lec10 - 降维 (Dimension Reduction)", id: "2017_10" },
+                { name: "Lec11 - 嵌入 (Embedding)", id: "2017_11" },
+                { name: "Lec12 - 深度生成模型 (Deep Generative Model)", id: "2017_12" }
+            ],
+            "2019": [
+                { name: "Lec1 - 回归与梯度下降 (Regression & Gradient Descent)", id: "2019_1" },
+                { name: "Lec2 - 误差来源、分类、逻辑回归 (Error, Classification, Logistic Regression)", id: "2019_2" },
+                { name: "Lec3 - 深度学习与反向传播 (Deep Learning & Backpropagation)", id: "2019_3" },
+                { name: "Lec4 - CNN 与 Keras", id: "2019_4" },
+                { name: "Lec5 - 训练深度模型 (Training Deep Models)", id: "2019_5" },
+                { name: "Lec6 - RNN", id: "2019_6" },
+                { name: "Lec7 - 集成学习 (Ensemble)", id: "2019_7" },
+                { name: "Lec8 - 半监督与迁移学习 (Semi-supervised & Transfer Learning)", id: "2019_8" },
+                { name: "Lec9 - Seq2seq", id: "2019_9" },
+                { name: "Lec10 - 无监督学习 (Unsupervised Learning)", id: "2019_10" },
+                { name: "Lec11 - 强化学习 (Reinforcement Learning)", id: "2019_11" },
+                { name: "Lec12 - GAN", id: "2019_12" },
+                { name: "Lec13 - Transformer & BERT", id: "2019_13" }
+            ],
+            "2021": [
+                { name: "Lec1 - 机器学习介绍与回归 (Introduction & Regression)", id: "2021_1" },
+                { name: "Lec2 - 深度学习基础 (Deep Learning Basics)", id: "2021_2" },
+                { name: "Lec3 - CNN 与自注意力 (CNN & Self-Attention)", id: "2021_3" },
+                { name: "Lec4 - Transformer", id: "2021_4" },
+                { name: "Lec5 - 生成模型 (Generative Model - GAN)", id: "2021_5" },
+                { name: "Lec6 - 自监督学习 (Self-Supervised Learning - BERT, GPT, Auto-encoder)", id: "2021_6" },
+                { name: "Lec7 - 可解释 AI 与对抗攻击 (Explainable AI & Adversarial Attack)", id: "2021_7" },
+                { name: "Lec8 - 领域适应 (Domain Adaptation)", id: "2021_8" },
+                { name: "Lec9 - 强化学习 (Reinforcement Learning)", id: "2021_9" },
+                { name: "Lec10 - 终身学习与网络压缩 (Life-long Learning & Network Compression)", id: "2021_10" },
+                { name: "Lec11 - 元学习 (Meta Learning)", id: "2021_11" }
+            ],
+            "2023": [
+                { name: "Lec1 - 正确认识 ChatGPT", id: "2023_1" },
+                { name: "Lec2 - 机器学习基本概念介绍", id: "2023_2" },
+                { name: "Lec3 - 机器如何生成文句 (Finetuning vs. Prompting)", id: "2023_3" },
+                { name: "Lec4 - 大模型 + 大资料 = 神奇结果？(GPT-4)", id: "2023_4" },
+                { name: "Lec5 - 机器如何生成图像 (Image Generation)", id: "2023_5" },
+                { name: "Lec6 - Diffusion Model 原理剖析", id: "2023_6" },
+                { name: "Lec7 - 基石模型的各种变形", id: "2023_7" },
+                { name: "Lec8 - 大型语言模型", id: "2023_8" }
+            ],
+            "2024-GenAI": [
+                { name: "Lec1 - 课程说明与生成式 AI 介绍", id: "2024g_1" },
+                { name: "Lec2-3 - 提示工程 & AI 代理人 (Prompt Engineering & AI Agent)", id: "2024g_2" },
+                { name: "Lec4-5 - 生成策略 & 从专才到通才", id: "2024g_3" },
+                { name: "Lec6-7 - 深度学习 & Transformer 基础", id: "2024g_4" },
+                { name: "Lec8-9 - 大型语言模型训练史 (Pre-training, RLHF, AI Agent)", id: "2024g_5" },
+                { name: "Lec10-11 - Transformer 与大型语言模型的可解释性", id: "2024g_6" },
+                { name: "Lec12-13 - 评估生成式 AI & 安全性议题", id: "2024g_7" },
+                { name: "Lec14-16 - 对抗攻击与生成策略 (Speculative Decoding)", id: "2024g_8" },
+                { name: "Lec17-18 - 影像的生成式 AI (Sora, VAE, GAN, Diffusion)", id: "2024g_9" },
+                { name: "Extra - GPT-4o 背后的语音技术", id: "2024g_10" }
+            ],
+            "2025": [
+                { name: "Lec1 - 一堂课搞懂生成式 AI", id: "2025_1" },
+                { name: "Lec2 - AI Agent", id: "2025_2" },
+                { name: "Lec3 - 剖析大型语言模型内部运作逻辑", id: "2025_3" },
+                { name: "Lec4 - Mamba", id: "2025_4" },
+                { name: "Lec5 - 大型语言模型的神奇能力哪里来 (Pretrain & Alignment)", id: "2025_5" },
+                { name: "Lec6 - 如何正确微调模型 (Post-training & Forgetting)", id: "2025_6" },
+                { name: "Lec7 - AI 推理能力哪里来 (Reasoning)", id: "2025_7" },
+                { name: "Lec8 - 模型编辑 (Model Editing)", id: "2025_8" },
+                { name: "Lec9 - 模型融合 (Model Merging)", id: "2025_9" },
+                { name: "Lec10 - 生成策略 (Speech & Generation Strategy)", id: "2025_10" }
+            ]
+        };
+
+        // 初始化
+        function init() {
+            renderCourses();
+            loadProgress();
+            updateStats();
+        }
+
+        // 渲染课程表
+        function renderCourses() {
+            const container = document.getElementById('coursesContainer');
+            container.innerHTML = '';
+
+            Object.keys(courses).sort().forEach(year => {
+                const yearSection = document.createElement('div');
+                yearSection.className = 'year-section';
+
+                const courseList = courses[year];
+                const completedCount = courseList.filter(c => isChecked(c.id)).length;
+                const progressPercent = Math.round((completedCount / courseList.length) * 100);
+
+                const yearTitle = document.createElement('div');
+                yearTitle.className = 'year-title';
+                const displayYear = year === '2024-GenAI' ? '2024 生成式AI课程' : `${year} 年课程`;
+                yearTitle.innerHTML = `
+                    <span>${displayYear}</span>
+                    <span class="year-progress">${completedCount}/${courseList.length} (${progressPercent}%)</span>
+                `;
+
+                const coursesDiv = document.createElement('div');
+                coursesDiv.className = 'courses';
+
+                courseList.forEach(course => {
+                    const courseItem = document.createElement('div');
+                    courseItem.className = 'course-item';
+
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.id = course.id;
+                    checkbox.checked = isChecked(course.id);
+                    checkbox.onchange = () => {
+                        saveProgress();
+                        updateStats();
+                        renderCourses();
+                    };
+
+                    const label = document.createElement('label');
+                    label.htmlFor = course.id;
+                    label.className = 'course-name';
+                    label.textContent = course.name;
+
+                    courseItem.appendChild(checkbox);
+                    courseItem.appendChild(label);
+                    coursesDiv.appendChild(courseItem);
+                });
+
+                yearSection.appendChild(yearTitle);
+                yearSection.appendChild(coursesDiv);
+                container.appendChild(yearSection);
+            });
+        }
+
+        // 检查是否已勾选
+        function isChecked(id) {
+            return localStorage.getItem(`course_${id}`) === 'true';
+        }
+
+        // 保存进度
+        function saveProgress() {
+            Object.keys(courses).forEach(year => {
+                courses[year].forEach(course => {
+                    const checkbox = document.getElementById(course.id);
+                    if (checkbox.checked) {
+                        localStorage.setItem(`course_${course.id}`, 'true');
+                    } else {
+                        localStorage.removeItem(`course_${course.id}`);
+                    }
+                });
+            });
+        }
+
+        // 加载进度
+        function loadProgress() {
+            Object.keys(courses).forEach(year => {
+                courses[year].forEach(course => {
+                    const checkbox = document.getElementById(course.id);
+                    if (checkbox) {
+                        checkbox.checked = isChecked(course.id);
+                    }
+                });
+            });
+        }
+
+        // 更新统计信息
+        function updateStats() {
+            let total = 0;
+            let completed = 0;
+
+            Object.keys(courses).forEach(year => {
+                total += courses[year].length;
+                courses[year].forEach(course => {
+                    if (isChecked(course.id)) {
+                        completed++;
+                    }
+                });
+            });
+
+            const remaining = total - completed;
+            const rate = total > 0 ? Math.round((completed / total) * 100) : 0;
+
+            document.getElementById('totalCourses').textContent = total;
+            document.getElementById('completedCourses').textContent = completed;
+            document.getElementById('remainingCourses').textContent = remaining;
+            document.getElementById('completionRate').textContent = rate + '%';
+            document.getElementById('progressFill').style.width = rate + '%';
+
+            // 更新年度统计
+            updateYearSummary('2017', courses['2017']);
+            updateYearSummary('2019', courses['2019']);
+            updateYearSummary('2021', courses['2021']);
+            updateYearSummary('2023', courses['2023']);
+            updateYearSummary('2024-GenAI', courses['2024-GenAI']);
+            updateYearSummary('2025', courses['2025']);
+        }
+
+        // 更新年度统计
+        function updateYearSummary(year, courseList) {
+            const completed = courseList.filter(c => isChecked(c.id)).length;
+            const element = document.getElementById(`summary${year}`);
+            if (element) {
+                element.textContent = `${completed}/${courseList.length} 节`;
+            }
+        }
+
+        // 全部标记
+        function markAll(checked) {
+            Object.keys(courses).forEach(year => {
+                courses[year].forEach(course => {
+                    const checkbox = document.getElementById(course.id);
+                    if (checkbox) {
+                        checkbox.checked = checked;
+                    }
+                });
+            });
+            saveProgress();
+            updateStats();
+            renderCourses();
+        }
+
+        // 导出数据
+        function exportData() {
+            let exportText = '李宏毅机器学习课程学习记录\n';
+            exportText += '=' .repeat(50) + '\n\n';
+
+            Object.keys(courses).sort().forEach(year => {
+                const courseList = courses[year];
+                const completedCount = courseList.filter(c => isChecked(c.id)).length;
+                exportText += `\n${year} 年课程 (${completedCount}/${courseList.length})\n`;
+                exportText += '-'.repeat(50) + '\n';
+
+                courseList.forEach(course => {
+                    const status = isChecked(course.id) ? '[✓]' : '[ ]';
+                    exportText += `${status} ${course.name}\n`;
+                });
+            });
+
+            exportText += '\n' + '='.repeat(50) + '\n';
+            const total = Object.values(courses).reduce((sum, list) => sum + list.length, 0);
+            const completed = Object.values(courses).reduce((sum, list) => sum + list.filter(c => isChecked(c.id)).length, 0);
+            exportText += `总计: ${completed}/${total} (${Math.round((completed/total)*100)}%)\n`;
+
+            const blob = new Blob([exportText], { type: 'text/plain;charset=utf-8' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `ML课程进度_${new Date().toLocaleDateString('zh-CN')}.txt`;
+            link.click();
+        }
+
+        // 清除数据
+        function clearData() {
+            if (confirm('确定要清除所有学习记录吗？此操作无法撤销。')) {
+                Object.keys(courses).forEach(year => {
+                    courses[year].forEach(course => {
+                        localStorage.removeItem(`course_${course.id}`);
+                    });
+                });
+                renderCourses();
+                updateStats();
+            }
+        }
+
+        // 页面加载时初始化
+        window.addEventListener('load', init);
+    </script>
+</body>
+</html>
