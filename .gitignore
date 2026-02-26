@@ -55,12 +55,65 @@ uv.lock
 *.swo
 *~
 
-# Local training artifacts
+# Local training artifacts (dl-from-scratch)
 dl-from-scratch/models/*.pkl
 dl-from-scratch/models/*.h5
 dl-from-scratch/models/*.pth
 
-# Dataset cache
+# Dataset cache (dl-from-scratch)
 dl-from-scratch/dataset/*.gz
 dl-from-scratch/dataset/*.pkl
 dl-from-scratch/dataset/mnist/
+
+# MIT 6.S184 Lab Artifacts
+# Model checkpoints (PyTorch models ~4-5MB each)
+mit/6.S184/05_labs/*/checkpoints/
+mit/6.S184/05_labs/**/checkpoints/
+*.pth
+*.ckpt
+*.pt
+
+# Downloaded datasets (MNIST ~63MB, etc.)
+mit/6.S184/05_labs/*/data/
+mit/6.S184/05_labs/**/data/
+
+# Generated outputs from training and experiments
+mit/6.S184/05_labs/**/*_training_loss_curve.png
+mit/6.S184/05_labs/**/*_generated_samples.png
+mit/6.S184/05_labs/**/*_animation.mp4
+mit/6.S184/05_labs/**/*_results.png
+mit/6.S184/05_labs/**/*_samples.png
+
+# Keep example/reference images in docs but ignore generated ones
+!**/images/*.png
+!**/docs/*.png
+!**/examples/*.png
+
+# Temporary experiment outputs
+outputs/
+results/
+figures/
+experiments/
+
+# Model artifacts (general)
+*.safetensors
+*.bin
+*.h5
+*.pkl
+*.npy
+*.npz
+
+# Training logs and tensorboard
+wandb/
+runs/
+logs/
+*.log
+events.out.tfevents.*
+
+# Large media files
+*.mp4
+*.avi
+*.mov
+*.gif
+!**/demos/*.gif
+!**/docs/*.mp4

@@ -1,0 +1,25 @@
+[project]
+name = "6-s184"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "celluloid>=0.2.0",
+    "einops>=0.8.2",
+    "matplotlib>=3.10.8",
+    "numpy>=2.4.2",
+    "scikit-learn>=1.8.0",
+    "seaborn>=0.13.2",
+    "torch>=2.10.0",
+    "torchvision>=0.25.0",
+    "tqdm>=4.67.3",
+]
+
+[dependency-groups]
+dev = [
+    "ipykernel>=7.2.0",
+    "jupyterlab>=4.5.4",
+    "pytest>=9.0.2",
+    "ruff>=0.15.2",
+]
