@@ -25,11 +25,18 @@ Short notes on what I study and when I update. I add more courses over time.
 - **2026-02-26**: Finished Lab Three: A Conditional Generative Model for Images
   - Created `sdelib/`: Reusable library for flow matching training and sampling
 
+### Reinforcement Learning
+- Westlake University: *Mathematical Foundation of Reinforcement Learning* course by Shiyu Zhao
+- Tsinghua University: *Deep Reinforcement Learning* course by Huazhe Xu
+- **2026-03-02**: Started reinforcement learning study; note 1 covered MDP fundamentals and Bellman equations
+
 ## Repository Structure
 
 ```
 learning-log/
 ├── dl-from-scratch/          # Deep Learning from Scratch (NumPy implementations)
 ├── Hung-yi_Lee/             # Hung-yi Lee's ML courses (2017-2025)
-└── mit/6.S184/                  # MIT Generative AI course materials
+├── mit/6.S184/               # MIT Generative AI course materials
+└── wesklake/
+    └── reinforcement-learning/  # Reinforcement Learning study notes
 ```
